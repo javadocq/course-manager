@@ -1,37 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Course Manager
 
-## Getting Started
+Next.js와 Prisma를 학습하기 위해 개발하는 간단한 교육 과정 관리 서비스입니다.
 
-First, run the development server:
+교육 과정을 등록하고 조회·수정·삭제하는 CRUD 기능을 구현하며, 프론트엔드부터 API와 데이터베이스까지 연결되는 전체 개발 흐름을 학습하는 것을 목표로 합니다.
+
+## 기술 스택
+
+- Next.js
+- React
+- TypeScript
+- App Router
+- Prisma ORM
+- SQLite
+- Tailwind CSS
+- pnpm
+
+## 주요 기능
+
+현재 개발 중입니다.
+
+- [ ] 교육 과정 목록 조회
+- [ ] 교육 과정 상세 조회
+- [ ] 교육 과정 등록
+- [ ] 교육 과정 수정
+- [ ] 교육 과정 삭제
+- [ ] 입력값 검증 및 오류 처리
+
+## 프로젝트 실행
+
+### 1. 패키지 설치
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. 환경변수 설정
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+프로젝트 루트에 `.env` 파일을 생성합니다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+DATABASE_URL="file:./dev.db"
+```
 
-## Learn More
+### 3. 데이터베이스 마이그레이션
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm exec prisma migrate dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. 개발 서버 실행
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm run dev
+```
 
-## Deploy on Vercel
+브라우저에서 [http://localhost:3000](http://localhost:3000)으로 접속합니다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 프로젝트 구조
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# course-manager
+```text
+course-manager/
+├── prisma/              # Prisma 스키마와 마이그레이션
+├── public/              # 이미지 등 정적 파일
+├── src/
+│   └── app/             # Next.js App Router 페이지 및 레이아웃
+├── .env                 # 환경변수(Git 제외)
+├── package.json
+└── README.md
+```
+
+## 학습 목표
+
+- Next.js App Router의 파일 기반 라우팅 이해
+- Server Component와 Client Component의 역할 구분
+- Prisma를 활용한 데이터 모델 정의
+- 데이터베이스 마이그레이션 경험
+- 교육 과정 CRUD 구현
+- 화면, 서버 로직과 데이터베이스의 연결 흐름 이해
