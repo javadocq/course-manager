@@ -11,3 +11,18 @@ generator client {
 datasource db {
   provider = "sqlite"
 }
+
+model Course {
+  id Int @id @default(autoincrement())
+  title String 
+  // Null을 허용하는 선택값
+  description String?
+  instructor String
+  capacity Int
+  startDate DateTime
+  endDate DateTime
+  // 생성 시, 현재 시각 저장
+  createdAt DateTime @default(now())
+  // 수정할 때, 현재 시각으로 변동 
+  updatedAt DateTime @updatedAt 
+}
