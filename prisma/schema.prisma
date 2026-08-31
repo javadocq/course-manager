@@ -13,16 +13,39 @@ datasource db {
 }
 
 model Course {
-  id Int @id @default(autoincrement())
-  title String 
+  id          Int      @id @default(autoincrement())
+  title       String
   // Null을 허용하는 선택값
   description String?
-  instructor String
-  capacity Int
-  startDate DateTime
-  endDate DateTime
+  instructor  String
+  capacity    Int
+  startDate   DateTime
+  endDate     DateTime
   // 생성 시, 현재 시각 저장
-  createdAt DateTime @default(now())
+  createdAt   DateTime @default(now())
   // 수정할 때, 현재 시각으로 변동 
-  updatedAt DateTime @updatedAt 
+  updatedAt   DateTime @updatedAt
+
+  enrollemnts Enrollment[]
+}
+
+model Enrollment {
+  id        Int      @id @default(autoincrement())
+  studentId Int
+  courseId  Int
+  createdAt DateTime @default(now())
+
+  student Student @relation(fields: [studentId], references: [id])
+  course  Course  @relation(fields: [courseId], references: [id])
+
+  @@unique([studentId, courseId])
+}
+
+model Student {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  enrollments Enrollment[]
 }

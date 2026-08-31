@@ -94,3 +94,67 @@ export async function updateCourse(formData: FormData) {
 
   revalidatePath(`/course/${courseId}/edit`);
 }
+
+export async function createStudent(formData: FormData) {
+  const name = formData.get("name");
+  const email = formData.get("email");
+  if (typeof name !== "string" || typeof email !== "string") {
+    throw new Error("Invalid form data");
+  }
+
+  await prisma.student.create({
+    data: {
+      name: name.trim(),
+      email: email.trim(),
+    },
+  });
+
+  revalidatePath("/student");
+}
+
+export async function deleteStudent(formData: FormData) {
+  const studentId = Number(formData.get("id"));
+
+  if (!Number.isInteger(studentId) || studentId <= 0) {
+    throw new Error("올바르지 않은 교육생 ID입니다.");
+  }
+
+  const result = await prisma.student.deleteMany({
+    where: {
+      id: studentId,
+    },
+  });
+
+  if (result.count === 0) {
+    console.log(`이미 삭제됐거나 존재하지 않는 교육생입니다: ${studentId}`);
+  }
+
+  revalidatePath("/student");
+}
+
+export async function updateStudent(formData: FormData) {
+  const studentId = Number(formData.get("id"));
+  const name = formData.get("name");
+  const email = formData.get("email");
+
+  if (
+    !Number.isInteger(studentId) ||
+    studentId <= 0 ||
+    typeof name !== "string" ||
+    typeof email !== "string"
+  ) {
+    throw new Error("Invalid form data");
+  }
+
+  await prisma.student.update({
+    where: {
+      id: studentId,
+    },
+    data: {
+      name: name.trim(),
+      email: email.trim(),
+    },
+  });
+
+  revalidatePath(`/student/${studentId}/edit`);
+}
