@@ -1,5 +1,6 @@
 import { prisma } from "@/app/lib/prisma";
 import { createCourse, deleteCourse } from "@/app/actions";
+import Link from "next/link";
 
 export default async function Home() {
   const courses = await prisma.course.findMany();
@@ -18,6 +19,8 @@ export default async function Home() {
             <li key={course.id}>
               <strong>{course.title}</strong>
               <span> · {course.instructor}</span>
+
+              <Link href={`/course/${course.id}/edit`}>수정</Link>
               <form action={deleteCourse}>
                 <input type="hidden" name="id" value={course.id} />
                 <button type="submit">삭제</button>

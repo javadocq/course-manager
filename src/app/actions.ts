@@ -55,3 +55,42 @@ export async function deleteCourse(formData: FormData) {
 
   revalidatePath("/");
 }
+
+export async function updateCourse(formData: FormData) {
+  const courseId = Number(formData.get("id"));
+  const title = formData.get("title");
+  const description = formData.get("description");
+  const instructor = formData.get("instructor");
+  const capacity = formData.get("capacity");
+  const startDate = formData.get("startDate");
+  const endDate = formData.get("endDate");
+
+  if (
+    !Number.isInteger(courseId) ||
+    courseId <= 0 ||
+    typeof title !== "string" ||
+    typeof description !== "string" ||
+    typeof instructor !== "string" ||
+    typeof capacity !== "string" ||
+    typeof startDate !== "string" ||
+    typeof endDate !== "string"
+  ) {
+    throw new Error("Invalid form data");
+  }
+
+  await prisma.course.update({
+    where: {
+      id: courseId,
+    },
+    data: {
+      title: title.trim(),
+      description: description.trim(),
+      instructor: instructor.trim(),
+      capacity: Number(capacity),
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
+    },
+  });
+
+  revalidatePath(`/course/${courseId}/edit`);
+}
