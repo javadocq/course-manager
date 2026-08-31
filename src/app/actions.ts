@@ -158,3 +158,26 @@ export async function updateStudent(formData: FormData) {
 
   revalidatePath(`/student/${studentId}/edit`);
 }
+
+export async function createEnrollment(formData: FormData) {
+  const studentId = Number(formData.get("studentId"));
+  const courseId = Number(formData.get("courseId"));
+
+  if (
+    !Number.isInteger(studentId) ||
+    studentId <= 0 ||
+    !Number.isInteger(courseId) ||
+    courseId <= 0
+  ) {
+    throw new Error("Invalid form data");
+  }
+
+  await prisma.enrollment.create({
+    data: {
+      studentId,
+      courseId,
+    },
+  });
+
+  revalidatePath(`/enrollments`);
+}
