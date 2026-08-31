@@ -92,6 +92,7 @@ export async function updateCourse(formData: FormData) {
     },
   });
 
+  revalidatePath("/");
   revalidatePath(`/course/${courseId}/edit`);
 }
 
