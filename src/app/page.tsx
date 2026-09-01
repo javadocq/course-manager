@@ -1,4 +1,4 @@
-import { prisma } from "@/app/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { createCourse, deleteCourse } from "@/app/actions";
 import Link from "next/link";
 
