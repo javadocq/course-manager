@@ -1,4 +1,4 @@
-import { prisma } from "@/app/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { createStudent, deleteStudent } from "@/app/actions";
 
 export default async function StudentsPage() {
