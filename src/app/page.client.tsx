@@ -1,12 +1,31 @@
 "use client";
 
-import { createCourse } from "./actions";
+import { useCreateCourse } from "@/hooks/mutations/useCreateCourse";
+import type { FormEvent } from "react";
 
 const HomePageClient = () => {
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        await createCourse(formData);
+  const createCourseMutation = useCreateCourse();
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      
+      const form = e.currentTarget;
+      const formData = new FormData(form);
+
+      createCourseMutation.mutate({
+        title: formData.get("title") as string,
+        description: formData.get("description") as string,
+        instructor: formData.get("instructor") as string,
+        capacity: Number(formData.get("capacity")),
+        startDate: formData.get("startDate") as string,
+        endDate: formData.get("endDate") as string,
+      },
+        {
+          onSuccess: () => {
+            form.reset();
+          }
+        }
+      );
     };
 
     return (
@@ -47,9 +66,17 @@ const HomePageClient = () => {
                 <input id="endDate" name="endDate" type="date" required />
             </div>
 
-            <button type="submit">등록하기</button>
-        </form>
+            <button type="submit" disabled={createCourseMutation.isPending}>
+                {createCourseMutation.isPending ? "등록 중..." : "등록 하기"}
+            </button>
+
+            {createCourseMutation.isError && (
+                <p className="text-red-500">
+                    { createCourseMutation.error.message || "교육 과정 등록 중 오류가 발생했습니다." }
+                </p>
+            )}
+    </form>
     );
-};
+}
 
 export default HomePageClient;
